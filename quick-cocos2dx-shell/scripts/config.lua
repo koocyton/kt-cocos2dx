@@ -24,6 +24,9 @@ CONFIG_SCREEN_HEIGHT = 960
 -- auto scale mode
 CONFIG_SCREEN_AUTOSCALE = "FIXED_WIDTH"
 
+-- package name
+PACKAGE_NAME = "com.koramgame.ios.fysgtw"
+
 -- union ID
 PRODUCT_UNION_ID = "1023"
 
@@ -39,12 +42,12 @@ DEVICE_POST_URL = ""
 -- Location Application Path
 LOCAL_RES_PATH = "application"
 
-LOCAL_RES_PLIST = "D:\\Project\\kt-cocos2dx\\quick-cocos2dx-shell\\res\\local_version.plist"
+LOCAL_RES_PLIST = "D:\\Project\\kt-cocos2dx\\quick-cocos2dx-shell\\scripts\\local_version.plist"
 
-REMOTE_SAV_PLIST = "D:\\Project\\kt-cocos2dx\\quick-cocos2dx-shell\\res\\remote_version.plist"
+REMOTE_SAV_PLIST = "D:\\Project\\kt-cocos2dx\\quick-cocos2dx-shell\\scripts\\remote_version.plist"
 
 -- Remote Application Path
-REMOTE_RES_PLIST = "http://gii.doopp.com"
+REMOTE_RES_PLIST = "http://gii.doopp.com/upload/last_version.plist"
 
 -- Remote Config URL
 REMOTE_CONFIG_URL = ""

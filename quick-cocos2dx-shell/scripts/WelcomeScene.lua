@@ -1,4 +1,4 @@
-local updateService = require("UpdateService")
+local upgradeService = require("UpgradeService")
 
 local WelcomeScene = class("WelcomeScene", function()
 	return display.newScene("WelcomeScene")
@@ -44,10 +44,10 @@ function WelcomeScene:onUpgrading()
 end
 
 function WelcomeScene:onEnter()
-	updateService.onUpgradeBegin = self.onUpgradeBegin
-	updateService.onUpgradeEnd   = self.onUpgradeEnd
-	updateService.onUpgrading    = self.onUpgrading
-	updateService:upgrade()
+	upgradeService.onUpgradeBegin = self.onUpgradeBegin
+	upgradeService.onUpgradeEnd   = self.onUpgradeEnd
+	upgradeService.onUpgrading    = self.onUpgrading
+	upgradeService:upgrade()
 end
 
 function WelcomeScene:onExit()
