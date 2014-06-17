@@ -12,5 +12,6 @@ function __G__TRACKBACK__(errorMessage)
     print("----------------------------------------")
 end
 
+-- begin goto welcome scene
 local scene = require("WelcomeScene").new()
 display.replaceScene(scene)
