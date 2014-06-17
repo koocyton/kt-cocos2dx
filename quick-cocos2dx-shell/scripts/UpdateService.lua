@@ -32,13 +32,12 @@ end
 function UpdateService:getRemotePlist(event)
 	local request = event.request
 	if not (event.name == "completed") then
-		-- 请求失败，显示错误代码和错误消息
+		-- display error info
 		print(request:getErrorCode(), request:getErrorMessage())
 		return
     end
-
-	local response = request:getResponseString()
-	saveFile("File_Name")
+	-- local response = request:getResponseString()
+	request:saveResponseData(REMOTE_SAV_PLIST)
 end
 
 function UpdateService:updateVersion(launchFunction)
