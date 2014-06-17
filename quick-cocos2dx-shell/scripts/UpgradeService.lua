@@ -66,27 +66,26 @@ function UpgradeService:resousePlistDiff()
 	-- get remote plist string
 	local remote_plist = CCFileUtils:sharedFileUtils():getFileData(REMOTE_SAV_PLIST)
 
-	-- if can not analyze plist file
+	-- check REMOTE_SAV_PLIST has this application's package name
 	if not self:remotePlistHasPackageName(PACKAGE_NAME, remote_plist) then
+		print("remotePlistHasPackageName : " .. PACKAGE_NAME)
 		self:onUpgradeEnd()
 		return
 	end
 
-	-- set upgrade download url
-    local t = {} -- table to store the indices  
-    local i = 0
-	local s = "[^@].+"
-    while true do  
-      i = string.find(s, "\n", i+1)    -- find 'next' newline  
-      if i == nil then break end  
-      table.insert(t, i)
-	  print(i)
-    end 
+	-- get upgrade all url
+	local upgrade_url = self:getUpgradeUrl(remote_plist)
+	if upgrade_url~=nil then
+		print("getUpgradeUrl")
+		self:onUpgradeEnd()
+		return
+	end
 end
 
--- check REMOTE_SAV_PLIST has this application's package name
-function UpgradeService:remotePlistHasPackageName(package_name, remote_plist)
-	local i,j = remote_plist:find("@package_name.+" .. PACKAGE_NAME)
+-- get upgrade all url
+function UpgradeService:getUpgradeUrl(remote_plist)
+	local i,j = string.find(remote_plist, "@upgrade_url.+?\n")
+	print(string.sub(remote_plist, i, j))
 	if (j==nil) then
 		return false
 	else
@@ -94,4 +93,15 @@ function UpgradeService:remotePlistHasPackageName(package_name, remote_plist)
 	end
 end
 
+-- check REMOTE_SAV_PLIST has this application's package name
+function UpgradeService:remotePlistHasPackageName(package_name, remote_plist)
+	local i,j = string.find(remote_plist, "@package_name.+" .. PACKAGE_NAME)
+	if (j==nil) then
+		return false
+	else
+		return true
+	end
+end
+
+--
 return UpgradeService
