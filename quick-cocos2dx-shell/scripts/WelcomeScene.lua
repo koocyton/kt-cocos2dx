@@ -1,62 +1,58 @@
 local updateService = require("UpdateService")
 
 local WelcomeScene = class("WelcomeScene", function()
-    return display.newScene("WelcomeScene")
+	return display.newScene("WelcomeScene")
 end)
 
 function WelcomeScene:ctor()
-    display.newSprite("welcome_bg.jpg"):pos(display.cx, display.cy):addTo(self)
-end
-
-function WelcomeScene:onNewVersion()
-    local launchFunction = function() self:launchApplication() end
-    updateService:updateVersion(launchFunction)
-end
-
-function WelcomeScene:onOldVersion()
-    self:launchApplication()
-end
-
-function WelcomeScene:onTouch()
-    print(123)
-end
-
-function WelcomeScene:launchApplication()
-    self:displayTouchStar()
+	display.newSprite("welcome_bg.jpg"):pos(display.cx, display.cy):addTo(self)
+	-- display.newSprite("update_bg.jpg"):pos(display.cx, display.cy):addTo(self)
 end
 
 
 
-function WelcomeScene:displayTouchStar()
+function WelcomeScene:updateBegin()
 
-    -- 设置触摸模式
-    -- self:setTouchMode(cc.TOUCH_MODE_ALL_AT_ONCE) -- 多点
-    self:setTouchMode(cc.TOUCH_MODE_ONE_BY_ONE) -- 单点（默认模式）
-    -- 添加触摸事件处理函数
-    self:addNodeEventListener(cc.NODE_TOUCH_EVENT, function(event)
+	--[[ 启用触摸
+	self:setTouchEnabled(true)
+	-- 设置触摸模式
+	-- self:setTouchMode(cc.TOUCH_MODE_ALL_AT_ONCE) -- 多点
+	self:setTouchMode(cc.TOUCH_MODE_ONE_BY_ONE) -- 单点（默认模式）
+	-- 添加触摸事件处理函数
+	self:addNodeEventListener(cc.NODE_TOUCH_EVENT, function(event)
 	print(111)
-        -- 返回 true 表示要响应该触摸事件，并继续接收该触摸事件的状态变化
+	-- 返回 true 表示要响应该触摸事件，并继续接收该触摸事件的状态变化
 	return true
-    end)
+	end)
 
-    ui.newTTFLabel({text = "Touch To Star", size = 30, align = ui.TEXT_ALIGN_CENTER})
-        :pos(display.cx, display.cy / 3)
-        :addTo(self)
-end 
+	ui.newTTFLabel({text = "Touch To Star", size = 30, align = ui.TEXT_ALIGN_CENTER})
+		:pos(display.cx, display.cy / 3)
+		:addTo(self)
+	--]]
+end
+
+function WelcomeScene:onUpgradeBegin()
+	print("onUpgradeBegin")
+end
+
+function WelcomeScene:onUpgradeEnd()
+	print("onUpgradeEnd")
+end
+
+function WelcomeScene:onUpgrading()
+	print("onUpgrading")
+end
 
 function WelcomeScene:onEnter()
-    local launchFunction = function() self:launchApplication() end
-    local onNewFunction  = function() self:onNewVersion() end
-    local onOldFunction  = function() self:onOldVersion() end
-    updateService:getRemoteVersion(launchFunction, onNewFunction, onOldFunction)
-
-    -- 启用触摸
-    self:setTouchEnabled(true)
+	updateService.onUpgradeBegin = self.onUpgradeBegin
+	updateService.onUpgradeEnd   = self.onUpgradeEnd
+	updateService.onUpgrading    = self.onUpgrading
+	updateService:upgrade()
 end
 
 function WelcomeScene:onExit()
-    -- 关闭事件
-    self:removeAllEventListeners();
+	-- 关闭事件
+	self:removeAllEventListeners();
 end
 
 return WelcomeScene
