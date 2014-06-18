@@ -15,7 +15,7 @@ PRODUCT_ID = "1023"
 DEVICE_POST_URL = ""
 
 -- Location Application Path
-LOCAL_RES_DIR = device.writablePath .. "script/app/"
+LOCAL_RES_DIR = device.writablePath .. "res/"
 if (device.platform=="windows") then
 	LOCAL_RES_DIR = string.gsub(LOCAL_RES_DIR, "/", "\\")
 end
