@@ -23,6 +23,8 @@ end
 -- device.writablePath .. device.directorySeparator
 LOCAL_RES_PLIST = LOCAL_RES_DIR .. "local_version.plist"
 LOCAL_TMP_PLIST = LOCAL_RES_DIR .. "remote_version.plist"
+--LOCAL_RES_PLIST = "D:\\Project\\kt-cocos2dx\\quick-cocos2dx-shell\\res\\local_version.plist"
+--LOCAL_TMP_PLIST = "D:\\Project\\kt-cocos2dx\\quick-cocos2dx-shell\\res\\remote_version.plist"
 
 -- Remote Application Path
 REMOTE_RES_PLIST = "http://gii.doopp.com/upload/last_version.plist"

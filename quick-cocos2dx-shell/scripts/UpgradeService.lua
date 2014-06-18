@@ -57,8 +57,7 @@ function UpgradeService:getRemotePlist(event)
 	---end
 
 	local response = request:getResponseString()
-	print(response)
-	request:saveResponseData(LOCAL_TMP_PLIST);print(LOCAL_TMP_PLIST)
+	request:saveResponseData(LOCAL_TMP_PLIST);
 	self:onUpgrading(0.05)
 
 	-- begin diff resouse plist file
