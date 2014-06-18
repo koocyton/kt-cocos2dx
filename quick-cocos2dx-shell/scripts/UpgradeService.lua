@@ -1,5 +1,3 @@
-function trim(s) return (string.gsub(s, "^%s*(.-)%s*$", "%1")) end
-
 -- service class
 local UpgradeService = class("UpgradeService")
 
@@ -8,32 +6,34 @@ function UpgradeService:ctor()
 	self.onUpgradeBegin = null
 	self.onUpgrading    = null
 	self.onUpgradeEnd   = null
+	self.upgrade_urls   = {}
+	self.update_list    = {}
 end
 
 -- on upgrade begin delegate
 function UpgradeService:onUpgradeBegin()
-	if self.onUpgradeBegin ~= "fuction" then
+	if self.onUpgradeBegin == "function" then
 		self.onUpgradeBegin()
 	end
 end
 
 -- on upgrading delegate
 function UpgradeService:onUpgrading(number)
-	if self.onUpgrading ~= "fuction" then
+	if self.onUpgrading == "function" then
 		self.onUpgrading(number)
 	end
 end
 
 -- on upgrade end delegate
 function UpgradeService:onUpgradeEnd()
-	if self.onUpgradeEnd ~= "fuction" then
+	if self.onUpgradeEnd == "function" then
 		self.onUpgradeEnd()
 	end
 end
 
 -- upgrade action
 function UpgradeService:upgrade()
-	local request = network.createHTTPRequest(function(event) self:getRemotePlist(event) end, REMOTE_RES_PLIST, "POST")
+	local request = network.createHTTPRequest(function(event) self:getRemotePlist(event) end, REMOTE_RES_PLIST, "GET")
 	request:start()
 end
 
@@ -45,7 +45,7 @@ function UpgradeService:getRemotePlist(event)
 	if not (event.name == "completed") then
 		-- display error info
 		self:onUpgrading(0.05)
-		print(request:getErrorCode(), request:getErrorMessage())
+		print("request error : UpgradeService.lua (48)", request:getErrorCode(), request:getErrorMessage())
 		return
     end
 
@@ -57,7 +57,7 @@ function UpgradeService:getRemotePlist(event)
 	---end
 
 	-- local response = request:getResponseString()
-	request:saveResponseData(REMOTE_SAV_PLIST)
+	request:saveResponseData(LOCAL_TMP_PLIST)
 	self:onUpgrading(0.05)
 
 	-- begin diff resouse plist file
@@ -68,7 +68,7 @@ end
 function UpgradeService:resousePlistDiff()
 
 	-- get remote plist string
-	local remote_plist_content = CCFileUtils:sharedFileUtils():getFileData(REMOTE_SAV_PLIST)
+	local remote_plist_content = CCFileUtils:sharedFileUtils():getFileData(LOCAL_TMP_PLIST)
 
 	-- check REMOTE_SAV_PLIST has this application's package name
 	if not self:remotePlistHasPackageName(remote_plist_content) then
@@ -77,12 +77,12 @@ function UpgradeService:resousePlistDiff()
 	end
 
 	-- get upgrade all url
-	local upgrade_urls = self:getUpgradeUrl(remote_plist_content)
-	if (upgrade_urls==nil) then
+	self.upgrade_urls = self:getUpgradeUrl(remote_plist_content)
+	if (self.upgrade_urls==nil) then
 		self:onUpgradeEnd()
 		return
 	end
-	-- print(upgrade_urls[1], upgrade_urls[2], upgrade_urls[3])
+	-- print(self.upgrade_urls[1], self.upgrade_urls[2], self.upgrade_urls[3])
 
 	-- get update file list
 	local remote_plist_data = {}
@@ -106,24 +106,53 @@ function UpgradeService:resousePlistDiff()
 		end
     end
 
-	local update_list = {}
+	self.update_list = {}
 	local n = 1
 	for f,m in pairs(remote_plist_data) do
-		update_list[n] = f
+		self.update_list[n] = f
 		n = n + 1
 	end
 
-	self:UpdateLocalFile(upgrade_urls, update_list, 1)
+	self:onUpgrading(0.10)
+	self:UpdateLocalFile(1)
 end
 
 -- update the file
-function UpgradeService:UpdateLocalFile(upgrade_urls, update_list, key)
-	self:onUpgrading(0.10)
-	-- print(upgrade_urls[0], upgrade_urls[1], upgrade_urls[2], upgrade_urls[3], upgrade_urls[4])
-	-- print(#upgrade_urls)
-	for k,v in pairs(update_list) do
-		print(v, #upgrade_urls)
+function UpgradeService:UpdateLocalFile(key)
+	if (self.update_list[key]==nil) then
+		self:onUpgradeEnd()
+		return
 	end
+	local remote_file_url = self.upgrade_urls[1] .. self.update_list[key]
+	print(remote_file_url)
+	local request = network.createHTTPRequest(function(event) self:SaveUpgradeFile(event, self.update_list[key], key) end, remote_file_url, "GET")
+	request:start()
+end
+
+-- Save Upgrade File
+function UpgradeService:SaveUpgradeFile(event, file_path, key)
+	--
+	local request = event.request
+	--
+	if not (event.name == "completed") then
+		print("request error : UpgradeService.lua (140)", request:getErrorCode(), request:getErrorMessage())
+		return
+    end
+
+	--
+	local code = request:getResponseStatusCode()
+	-- print("request code : " .. code)
+	if code ~= 200 then
+	   -- 请求结束，但没有返回 200 响应代码
+	    print(code)
+	    return
+	end
+
+	-- request:saveResponseData(LOCAL_TMP_PLIST)
+	-- local response = request:getResponseString()
+	print(file_path, #self.update_list, key)
+	local local_file_path = file_path
+	self:UpdateLocalFile(key+1)
 end
 
 -- get upgrade all url

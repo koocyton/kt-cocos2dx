@@ -1,6 +1,8 @@
 require("config")
 require("framework.init")
 
+function trim(s) return (string.gsub(s, "^%s*(.-)%s*$", "%1")) end
+
 -- LOCAL_RES_PATH = device.writablePath .. LOCAL_RES_PATH
 -- LOCAL_RES_PLIST = LOCAL_RES_PATH .. device.directorySeparator .. LOCAL_RES_PLIST
 
