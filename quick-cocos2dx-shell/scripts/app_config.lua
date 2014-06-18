@@ -15,15 +15,14 @@ PRODUCT_ID = "1023"
 DEVICE_POST_URL = ""
 
 -- Location Application Path
--- DS = device.directorySeparator
--- LOCAL_RES_DIR = device.writablePath .. DS .. "script" .. DS .. "app"
-LOCAL_RES_DIR = "D:\\Project\\kt-cocos2dx\\quick-cocos2dx-shell\\scripts\\app\\"
+LOCAL_RES_DIR = device.writablePath .. "script/app/"
+if (device.platform=="windows") then
+	LOCAL_RES_DIR = string.gsub(LOCAL_RES_DIR, "/", "\\")
+end
 
 -- device.writablePath .. device.directorySeparator
 LOCAL_RES_PLIST = LOCAL_RES_DIR .. "local_version.plist"
 LOCAL_TMP_PLIST = LOCAL_RES_DIR .. "remote_version.plist"
-print(" LOCAL_RES_PLIST : " .. LOCAL_RES_PLIST)
-print(" LOCAL_TMP_PLIST : " .. LOCAL_TMP_PLIST)
 
 -- Remote Application Path
 REMOTE_RES_PLIST = "http://gii.doopp.com/upload/last_version.plist"

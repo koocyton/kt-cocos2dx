@@ -56,8 +56,9 @@ function UpgradeService:getRemotePlist(event)
 	--    return
 	---end
 
-	-- local response = request:getResponseString()
-	request:saveResponseData(LOCAL_TMP_PLIST)
+	local response = request:getResponseString()
+	print(response)
+	request:saveResponseData(LOCAL_TMP_PLIST);print(LOCAL_TMP_PLIST)
 	self:onUpgrading(0.05)
 
 	-- begin diff resouse plist file
@@ -150,8 +151,8 @@ function UpgradeService:SaveUpgradeFile(event, file_path, key)
 
 	-- request:saveResponseData(LOCAL_TMP_PLIST)
 	-- local response = request:getResponseString()
-	print(file_path, #self.update_list, key)
-	local local_file_path = file_path
+	local local_file_path = LOCAL_RES_DIR .. file_path
+	print(file_path, #self.update_list, key, local_file_path)
 	self:UpdateLocalFile(key+1)
 end
 
