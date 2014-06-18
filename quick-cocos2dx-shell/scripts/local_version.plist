@@ -1,6 +1,7 @@
 @package_name com.koramgame.ios.fysgtw, com.koramgame.android.fysgtw
-@upgrade_url http://gii.doopp.com/upgrade/v1.1/, http://gii.doopp.com/upgrade/v1.1/
+@upgrade_url http://gii.doopp.com/upgrade/v1.1/, http://gii.doopp.com/upgrade/v1.2/, http://gii.doopp.com/upgrade/v1.3/
 @version 1.11
 
-welcome.lua bcbbd059da0ba5cac9c80c8d69a25023
-scenes/main.lua bcbbd059da0ba5cac9c80c8d69a25023
+welcome.lua b3bbd059da0ba5cac9c80c8d69a25023
+scenes/main.lua bdbbd059da0ba5cac9c80c8d69a25023
+scenes/main2.lua 33bbd059da0ba5cac9c80c8d69a25023

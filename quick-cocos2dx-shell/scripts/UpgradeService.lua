@@ -1,3 +1,5 @@
+function trim(s) return (string.gsub(s, "^%s*(.-)%s*$", "%1")) end
+
 -- service class
 local UpgradeService = class("UpgradeService")
 
@@ -64,39 +66,82 @@ end
 function UpgradeService:resousePlistDiff()
 
 	-- get remote plist string
-	local remote_plist = CCFileUtils:sharedFileUtils():getFileData(REMOTE_SAV_PLIST)
+	local remote_plist_content = CCFileUtils:sharedFileUtils():getFileData(REMOTE_SAV_PLIST)
 
 	-- check REMOTE_SAV_PLIST has this application's package name
-	if not self:remotePlistHasPackageName(PACKAGE_NAME, remote_plist) then
-		print("remotePlistHasPackageName : " .. PACKAGE_NAME)
+	if not self:remotePlistHasPackageName(remote_plist_content) then
 		self:onUpgradeEnd()
 		return
 	end
 
 	-- get upgrade all url
-	local upgrade_url = self:getUpgradeUrl(remote_plist)
-	if upgrade_url~=nil then
-		print("getUpgradeUrl")
+	local upgrade_url = self:getUpgradeUrl(remote_plist_content)
+	if (upgrade_url==nil) then
 		self:onUpgradeEnd()
 		return
 	end
+	-- print(upgrade_url[1], upgrade_url[2], upgrade_url[3])
+
+	-- get update file list
+	local remote_plist_data = {}
+	for f, m in string.gmatch(remote_plist_content, "\n([^@\n ]+) (%w+)") do
+		remote_plist_data[f] = m
+    end
+
+	-- get local plist string
+	-- print("\n >> " .. REMOTE_SAV_PLIST, "\n >> " .. LOCAL_RES_PLIST)
+	local local_plist_content = CCFileUtils:sharedFileUtils():getFileData(LOCAL_RES_PLIST)
+	local local_plist_data = {}
+	for f, m in string.gmatch(local_plist_content, "\n([^@\n ]+) (%w+)") do
+		if (remote_plist_data[f]==nil) then
+			-- delete f
+		elseif (remote_plist_data[f]~=m) then
+			-- remove remote_plist_data[f] , update f
+			remote_plist_data[f] = nil
+			self:UpdateRemoteFile(upgrade_url, f)
+		else
+			-- remove remote_plist_data[f]
+			remote_plist_data[f] = nil
+		end
+    end
+
+	for f, m in pairs(remote_plist_data) do
+		self:UpdateRemoteFile(upgrade_url, f)
+	end
+end
+
+-- update the file
+function UpgradeService:UpdateRemoteFile(upgrade_url, update_file)
+	print(update_file)
 end
 
 -- get upgrade all url
 function UpgradeService:getUpgradeUrl(remote_plist)
-	local i,j = string.find(remote_plist, "@upgrade_url.+?\n")
-	print(string.sub(remote_plist, i, j))
-	if (j==nil) then
-		return false
+
+	-- 如果找不到 @upgrade_url
+	local _, _, upgrade_string = string.find(remote_plist, "@upgrade_url([^\n]+)")
+	if (upgrade_string==nil) then
+		return nil
+	end
+
+    local upgrade_url = {}
+	local n = 1
+    for url in string.gmatch(upgrade_string, "(http://[^,]+)") do
+        upgrade_url[n] = trim(url)
+		n = n+1
+    end
+
+	if (n==1) then
+		return nil
 	else
-		return true
+		return upgrade_url
 	end
 end
 
 -- check REMOTE_SAV_PLIST has this application's package name
-function UpgradeService:remotePlistHasPackageName(package_name, remote_plist)
-	local i,j = string.find(remote_plist, "@package_name.+" .. PACKAGE_NAME)
-	if (j==nil) then
+function UpgradeService:remotePlistHasPackageName(remote_plist)
+	local _, _, package_name = string.find(remote_plist, "@package_name[^\n]+(" .. PACKAGE_NAME .. ")")
+	if (package_name==nil) then
 		return false
 	else
 		return true

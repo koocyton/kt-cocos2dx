@@ -42,8 +42,8 @@ DEVICE_POST_URL = ""
 -- Location Application Path
 LOCAL_RES_PATH = "application"
 
-LOCAL_RES_PLIST = "D:\\Project\\kt-cocos2dx\\quick-cocos2dx-shell\\scripts\\local_version.plist"
-
+-- device.writablePath .. device.directorySeparator
+LOCAL_RES_PLIST  = "D:\\Project\\kt-cocos2dx\\quick-cocos2dx-shell\\scripts\\local_version.plist"
 REMOTE_SAV_PLIST = "D:\\Project\\kt-cocos2dx\\quick-cocos2dx-shell\\scripts\\remote_version.plist"
 
 -- Remote Application Path
