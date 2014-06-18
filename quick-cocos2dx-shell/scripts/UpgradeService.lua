@@ -114,45 +114,7 @@ function UpgradeService:resousePlistDiff()
 	end
 
 	self:onUpgrading(0.10)
-	self:UpdateLocalFile(1)
-end
-
--- update the file
-function UpgradeService:UpdateLocalFile(key)
-	if (self.update_list[key]==nil) then
-		self:onUpgradeEnd()
-		return
-	end
-	local remote_file_url = self.upgrade_urls[1] .. self.update_list[key]
-	print(remote_file_url)
-	local request = network.createHTTPRequest(function(event) self:SaveUpgradeFile(event, self.update_list[key], key) end, remote_file_url, "GET")
-	request:start()
-end
-
--- Save Upgrade File
-function UpgradeService:SaveUpgradeFile(event, file_path, key)
-	--
-	local request = event.request
-	--
-	if not (event.name == "completed") then
-		print("request error : UpgradeService.lua (140)", request:getErrorCode(), request:getErrorMessage())
-		return
-    end
-
-	--
-	local code = request:getResponseStatusCode()
-	-- print("request code : " .. code)
-	if code ~= 200 then
-	   -- 请求结束，但没有返回 200 响应代码
-	    print(code)
-	    return
-	end
-
-	-- request:saveResponseData(LOCAL_TMP_PLIST)
-	-- local response = request:getResponseString()
-	local local_file_path = LOCAL_RES_DIR .. file_path
-	print(file_path, #self.update_list, key, local_file_path)
-	self:UpdateLocalFile(key+1)
+	self:updateLocalFile(1)
 end
 
 -- get upgrade all url
@@ -186,6 +148,56 @@ function UpgradeService:remotePlistHasPackageName(remote_plist)
 	else
 		return true
 	end
+end
+
+-- update the file
+function UpgradeService:updateLocalFile(key)
+	if (self.update_list[key]==nil) then
+		self:onUpgradeEnd()
+		return
+	end
+	local remote_file_url = self.upgrade_urls[1] .. self.update_list[key]
+	print(remote_file_url)
+	local request = network.createHTTPRequest(function(event) self:SaveUpgradeFile(event, self.update_list[key], key) end, remote_file_url, "GET")
+	request:start()
+end
+
+-- Save Upgrade File
+function UpgradeService:SaveUpgradeFile(event, file_path, key)
+	--
+	local request = event.request
+	--
+	if not (event.name == "completed") then
+		print("request error : UpgradeService.lua (140)", request:getErrorCode(), request:getErrorMessage())
+		return
+    end
+
+	--
+	local code = request:getResponseStatusCode()
+	-- print("request code : " .. code)
+	if code ~= 200 then
+	   -- 请求结束，但没有返回 200 响应代码
+	    print(code)
+	    return
+	end
+
+	-- request:saveResponseData(LOCAL_TMP_PLIST)
+	-- local response = request:getResponseString()
+	if (device.platform=="windows") then
+		file_path = string.gsub(file_path, "/", "\\")
+	end
+	local local_file_path = LOCAL_RES_DIR .. file_path
+	-- print(file_path, #self.update_list, key, local_file_path)
+	self:createNotExistDir(local_file_path)
+	request:saveResponseData(local_file_path)
+	self:updateLocalFile(key+1)
+end
+
+-- create a Not Exist Dir
+function UpgradeService:createNotExistDir(file_path)
+	local _,_,dir = string.find(file_path, "(.+)" .. DS .. "%w+")
+	print( " >>> dir " .. dir)
+	os.execute("md  " .. dir)
 end
 
 --
