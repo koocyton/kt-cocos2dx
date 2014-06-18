@@ -45,8 +45,8 @@ function WelcomeScene:onUpgradeEnd()
 end
 
 -- upgrading ...
-function WelcomeScene:onUpgrading()
-	print("onUpgrading")
+function WelcomeScene:onUpgrading(number)
+	print("onUpgrading " .. number)
 end
 
 -- on enter this scene

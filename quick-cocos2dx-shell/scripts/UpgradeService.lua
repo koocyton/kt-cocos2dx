@@ -18,9 +18,9 @@ function UpgradeService:onUpgradeBegin()
 end
 
 -- on upgrading delegate
-function UpgradeService:onUpgrading()
+function UpgradeService:onUpgrading(number)
 	if self.onUpgrading ~= "fuction" then
-		self.onUpgrading()
+		self.onUpgrading(number)
 	end
 end
 
@@ -44,6 +44,7 @@ function UpgradeService:getRemotePlist(event)
 
 	if not (event.name == "completed") then
 		-- display error info
+		self:onUpgrading(0.05)
 		print(request:getErrorCode(), request:getErrorMessage())
 		return
     end
@@ -57,6 +58,7 @@ function UpgradeService:getRemotePlist(event)
 
 	-- local response = request:getResponseString()
 	request:saveResponseData(REMOTE_SAV_PLIST)
+	self:onUpgrading(0.05)
 
 	-- begin diff resouse plist file
 	self:resousePlistDiff()
@@ -75,12 +77,12 @@ function UpgradeService:resousePlistDiff()
 	end
 
 	-- get upgrade all url
-	local upgrade_url = self:getUpgradeUrl(remote_plist_content)
-	if (upgrade_url==nil) then
+	local upgrade_urls = self:getUpgradeUrl(remote_plist_content)
+	if (upgrade_urls==nil) then
 		self:onUpgradeEnd()
 		return
 	end
-	-- print(upgrade_url[1], upgrade_url[2], upgrade_url[3])
+	-- print(upgrade_urls[1], upgrade_urls[2], upgrade_urls[3])
 
 	-- get update file list
 	local remote_plist_data = {}
@@ -95,24 +97,33 @@ function UpgradeService:resousePlistDiff()
 	for f, m in string.gmatch(local_plist_content, "\n([^@\n ]+) (%w+)") do
 		if (remote_plist_data[f]==nil) then
 			-- delete f
+			print("delete file " .. f)
 		elseif (remote_plist_data[f]~=m) then
-			-- remove remote_plist_data[f] , update f
-			remote_plist_data[f] = nil
-			self:UpdateRemoteFile(upgrade_url, f)
+			-- update f
 		else
 			-- remove remote_plist_data[f]
 			remote_plist_data[f] = nil
 		end
     end
 
-	for f, m in pairs(remote_plist_data) do
-		self:UpdateRemoteFile(upgrade_url, f)
+	local update_list = {}
+	local n = 1
+	for f,m in pairs(remote_plist_data) do
+		update_list[n] = f
+		n = n + 1
 	end
+
+	self:UpdateLocalFile(upgrade_urls, update_list, 1)
 end
 
 -- update the file
-function UpgradeService:UpdateRemoteFile(upgrade_url, update_file)
-	print(update_file)
+function UpgradeService:UpdateLocalFile(upgrade_urls, update_list, key)
+	self:onUpgrading(0.10)
+	-- print(upgrade_urls[0], upgrade_urls[1], upgrade_urls[2], upgrade_urls[3], upgrade_urls[4])
+	-- print(#upgrade_urls)
+	for k,v in pairs(update_list) do
+		print(v, #upgrade_urls)
+	end
 end
 
 -- get upgrade all url
