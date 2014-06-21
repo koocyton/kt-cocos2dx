@@ -28,7 +28,7 @@ LOCAL_RES_PLIST = LOCAL_RES_DIR .. "local_version.plist"
 LOCAL_TMP_PLIST = LOCAL_RES_DIR .. "remote_version.plist"
 
 -- Remote Application Path
-REMOTE_RES_PLIST = "http://gii.doopp.com/upload/last_version.plist"
+REMOTE_RES_PLIST = "http://cdn.shell.doopp.com/com.koramgame.ios.fysgtw/last_version.plist"
 
 -- Remote Config URL
 REMOTE_CONFIG_URL = ""
