@@ -2,19 +2,21 @@
 local upgradeService = require("UpgradeService")
 
 -- scene class
-local WelcomeScene = class("WelcomeScene", function()
-	return display.newScene("WelcomeScene")
+local UpgradeScene = class("UpgradeScene", function()
+	return display.newScene("UpgradeScene")
 end)
 
 -- scene init
-function WelcomeScene:ctor()
-	display.newSprite("welcome_bg.jpg"):pos(display.cx, display.cy):addTo(self)
+function UpgradeScene:ctor()
+
+    CCFileUtils:sharedFileUtils():addSearchPath("scripts/")
+	display.newSprite("upgrade_bg.jpg"):pos(display.cx, display.cy):addTo(self)
 	-- display.newSprite("update_bg.jpg"):pos(display.cx, display.cy):addTo(self)
 end
 
 
 
-function WelcomeScene:updateBegin()
+function UpgradeScene:updateBegin()
 
 	--[[ 启用触摸
 	self:setTouchEnabled(true)
@@ -35,22 +37,26 @@ function WelcomeScene:updateBegin()
 end
 
 -- begin upgrade
-function WelcomeScene:onUpgradeBegin()
+function UpgradeScene:onUpgradeBegin()
 	print("onUpgradeBegin")
 end
 
 -- end upgrade
-function WelcomeScene:onUpgradeEnd()
+function UpgradeScene:onUpgradeEnd()
 	print("onUpgradeEnd")
+    CCFileUtils:sharedFileUtils():addSearchPath("res/")
+    -- begin goto welcome scene
+    local scene = require("WelcomeScene").new()
+    display.replaceScene(scene)
 end
 
 -- upgrading ...
-function WelcomeScene:onUpgrading(number)
+function UpgradeScene:onUpgrading(number)
 	print("onUpgrading " .. number)
 end
 
 -- on enter this scene
-function WelcomeScene:onEnter()
+function UpgradeScene:onEnter()
 	-- set delegate
 	upgradeService.onUpgradeBegin = self.onUpgradeBegin
 	upgradeService.onUpgradeEnd   = self.onUpgradeEnd
@@ -59,10 +65,10 @@ function WelcomeScene:onEnter()
 end
 
 -- on exit this scene
-function WelcomeScene:onExit()
+function UpgradeScene:onExit()
 	-- 关闭事件
-	self:removeAllEventListeners();
+	--self:removeAllEventListeners();
 end
 
 -- return scene
-return WelcomeScene
+return UpgradeScene

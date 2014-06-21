@@ -1,4 +1,4 @@
-require("env_config")
+require("config")
 require("framework.init")
 require("app_config")
 
@@ -12,5 +12,5 @@ function __G__TRACKBACK__(errorMessage)
 end
 
 -- begin goto welcome scene
-local scene = require("WelcomeScene").new()
+local scene = require("UpgradeScene").new()
 display.replaceScene(scene)
