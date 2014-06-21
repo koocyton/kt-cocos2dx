@@ -8,9 +8,8 @@ end)
 
 -- scene init
 function UpgradeScene:ctor()
-
-    CCFileUtils:sharedFileUtils():addSearchPath("scripts/")
-	display.newSprite("upgrade_bg.jpg"):pos(display.cx, display.cy):addTo(self)
+    --CCFileUtils:sharedFileUtils():addSearchPath("scripts/")
+	display.newSprite("scripts/logo.jpg"):pos(display.cx, display.cy):addTo(self)
 	-- display.newSprite("update_bg.jpg"):pos(display.cx, display.cy):addTo(self)
 end
 
