@@ -52,7 +52,7 @@ function UpgradeService:getRemotePlist(event)
 	--local code = request:getResponseStatusCode()
 	--if code ~= 200 then
 	--   -- 请求结束，但没有返回 200 响应代码
-	--    print(code)
+	--    print("request : return httpd code : " .. code)
 	--    return
 	---end
 
@@ -157,7 +157,7 @@ function UpgradeService:updateLocalFile(key)
 		return
 	end
 	local remote_file_url = self.upgrade_urls[1] .. self.update_list[key]
-	print(remote_file_url)
+	-- print(remote_file_url)
 	local request = network.createHTTPRequest(function(event) self:SaveUpgradeFile(event, self.update_list[key], key) end, remote_file_url, "GET")
 	request:start()
 end
@@ -176,8 +176,7 @@ function UpgradeService:SaveUpgradeFile(event, file_path, key)
 	local code = request:getResponseStatusCode()
 	-- print("request code : " .. code)
 	if code ~= 200 then
-	   -- 请求结束，但没有返回 200 响应代码
-	    print(code)
+	    print("request : return httpd code : " .. code)
 	    return
 	end
 
@@ -186,6 +185,7 @@ function UpgradeService:SaveUpgradeFile(event, file_path, key)
 	if (device.platform=="windows") then
 		file_path = string.gsub(file_path, "/", "\\")
 	end
+
 	local local_file_path = LOCAL_RES_DIR .. file_path
 	-- print(file_path, #self.update_list, key, local_file_path)
 	self:createNotExistDir(local_file_path)
@@ -196,7 +196,7 @@ end
 -- create a Not Exist Dir
 function UpgradeService:createNotExistDir(file_path)
 	local _,_,dir = string.find(file_path, "(.+)" .. DS .. "%w+")
-	print( " >>> dir " .. dir)
+	print( " >>> mkdir (199) " .. dir)
 	os.execute("md  " .. dir)
 end
 
