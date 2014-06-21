@@ -14,8 +14,6 @@ function UpgradeScene:ctor()
 	-- display.newSprite("update_bg.jpg"):pos(display.cx, display.cy):addTo(self)
 end
 
-
-
 function UpgradeScene:updateBegin()
 
 	--[[ 启用触摸
