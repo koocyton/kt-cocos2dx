@@ -1,3 +1,5 @@
+local lfs = require("lfs")
+
 -- service class
 local UpgradeService = class("UpgradeService")
 
@@ -11,26 +13,30 @@ function UpgradeService:init()
 	self.update_list    = {}
 
 	self.download_size = 0
+	self.download_per = 0
 end
 
 -- on upgrade begin delegate
-function UpgradeService:onUpgradeBegin()
-	if self.onUpgradeBegin == "function" then
-		self.onUpgradeBegin()
+function UpgradeService:upgradeBegin()
+	if type(self.onUpgradeBegin) == "function" then
+		self:onUpgradeBegin()
 	end
 end
 
 -- on upgrading delegate
-function UpgradeService:onUpgrading(number)
-	if self.onUpgrading == "function" then
-		self.onUpgrading(number)
+function UpgradeService:upgrading(number)
+	if type(self.onUpgrading) == "function" then
+		self.download_per = number + self.download_per
+		self:onUpgrading(self.download_per)
 	end
 end
 
 -- on upgrade end delegate
-function UpgradeService:onUpgradeEnd()
-	if self.onUpgradeEnd == "function" then
-		self.onUpgradeEnd()
+function UpgradeService:upgradeEnd()
+	-- os.rename(LOCAL_TMP_PLIST, LOCAL_RES_PLIST)
+	print( " >> end >> ")
+	if type(self.onUpgradeEnd) == "function" then
+		self:onUpgradeEnd()
 	end
 end
 
@@ -43,12 +49,13 @@ end
 
 -- download resource plist file and save plist in local
 function UpgradeService:getRemotePlist(event)
-	self:onUpgradeBegin()
+	-- print( " <<<<<<<<<<<<< ")
+	self:upgradeBegin()
 	local request = event.request
 
 	if not (event.name == "completed") then
 		-- display error info
-		self:onUpgrading(0.05)
+		self:upgrading(0.05)
 		print("request error : UpgradeService.lua (48)", request:getErrorCode(), request:getErrorMessage())
 		return
     end
@@ -62,7 +69,7 @@ function UpgradeService:getRemotePlist(event)
 
 	local response = request:getResponseString()
 	request:saveResponseData(LOCAL_TMP_PLIST);
-	self:onUpgrading(0.05)
+	self:upgrading(0.05)
 
 	-- begin diff resouse plist file
 	self:resousePlistDiff()
@@ -76,14 +83,14 @@ function UpgradeService:resousePlistDiff()
 
 	-- check REMOTE_SAV_PLIST has this application's package name
 	if not self:remotePlistHasPackageName(remote_plist_content) then
-		self:onUpgradeEnd()
+		self:upgradeEnd()
 		return
 	end
 
 	-- get upgrade all url
 	self.upgrade_urls = self:getUpgradeUrl(remote_plist_content)
 	if (self.upgrade_urls==nil) then
-		self:onUpgradeEnd()
+		self:upgradeEnd()
 		return
 	end
 	-- print(self.upgrade_urls[1], self.upgrade_urls[2], self.upgrade_urls[3])
@@ -96,7 +103,7 @@ function UpgradeService:resousePlistDiff()
 		self.download_size = s + self.download_size
     end
 
-	print(self.download_size)
+	-- print(self.download_size)
 
 	-- get local plist string
 	-- print("\n >> " .. REMOTE_SAV_PLIST, "\n >> " .. LOCAL_RES_PLIST)
@@ -105,7 +112,11 @@ function UpgradeService:resousePlistDiff()
 	for f, m in string.gmatch(local_plist_content, "\n([^@\n ]+) (%w+)") do
 		if (remote_plist_data[f]==nil) then
 			-- delete f
+			if (device.platform=="windows") then
+				f = string.gsub(LOCAL_RES_DIR .. f, "/", "\\")
+			end
 			print("delete file " .. f)
+			os.remove(f)
 		elseif (remote_plist_data[f]~=m) then
 			-- update f
 		else
@@ -121,7 +132,7 @@ function UpgradeService:resousePlistDiff()
 		n = n + 1
 	end
 
-	self:onUpgrading(0.10)
+	self:upgrading(0.10)
 	self:updateLocalFile(1)
 end
 
@@ -161,7 +172,7 @@ end
 -- update the file
 function UpgradeService:updateLocalFile(key)
 	if (self.update_list[key]==nil) then
-		self:onUpgradeEnd()
+		self:upgradeEnd()
 		return
 	end
 	local remote_file_url = self.upgrade_urls[1] .. self.update_list[key]
@@ -198,14 +209,19 @@ function UpgradeService:SaveUpgradeFile(event, file_path, key)
 	-- print(file_path, #self.update_list, key, local_file_path)
 	self:createNotExistDir(local_file_path)
 	request:saveResponseData(local_file_path)
+
+	-- print(" >>>>>>>>>>>> ", request:getResponseDataLength(), self.download_size)
+	self:upgrading(request:getResponseDataLength() / self.download_size * 0.8)
+
 	self:updateLocalFile(key+1)
 end
 
 -- create a Not Exist Dir
 function UpgradeService:createNotExistDir(file_path)
 	local _,_,dir = string.find(file_path, "(.+)" .. DS .. "%w+")
-	print( " >>> mkdir (199) " .. dir)
-	os.execute("md  " .. dir)
+	lfs.mkdir(dir)
+	-- print( " >>> mkdir (199) " .. dir)
+	-- os.execute("md  " .. dir)
 end
 
 --

@@ -15,12 +15,12 @@ end
 
 -- begin upgrade
 function UpgradeScene:onUpgradeBegin()
-	print("onUpgradeBegin")
+	--print(" >>>>>>>>>>>> onUpgradeBegin")
 end
 
 -- end upgrade
 function UpgradeScene:onUpgradeEnd()
-	print("onUpgradeEnd")
+	--print(" <<<<<<<<<<< onUpgradeEnd")
     CCFileUtils:sharedFileUtils():addSearchPath("res/")
     -- begin goto welcome scene
     local scene = require("WelcomeScene").new()
@@ -29,7 +29,7 @@ end
 
 -- upgrading ...
 function UpgradeScene:onUpgrading(number)
-	print("onUpgrading " .. number)
+	print("onUpgrading : " .. number)
 end
 
 -- on enter this scene

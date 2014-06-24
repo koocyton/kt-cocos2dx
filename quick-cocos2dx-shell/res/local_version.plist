@@ -1,3 +1,5 @@
 @package_name com.koramgame.ios.fysgtw, com.koramgame.android.fysgtw
-@upgrade_url http://gii.doopp.com/upgrade/v1.1/, http://gii.doopp.com/upgrade/v1.2/, http://gii.doopp.com/upgrade/v1.3/
+@update_source http://cdn.shell.doopp.com/com.koramgame.ios.fysgtw/, http://cdn.shell.doopp.com/com.koramgame.android.fysgtw/
 @version 1.11
+
+ccc.jpg 2b04df3ecc1d94afddff082d139c6f15 780831
