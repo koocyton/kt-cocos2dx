@@ -2,12 +2,15 @@
 local UpgradeService = class("UpgradeService")
 
 -- init upgrade class
-function UpgradeService:ctor()
-	self.onUpgradeBegin = null
-	self.onUpgrading    = null
-	self.onUpgradeEnd   = null
+function UpgradeService:init()
+	-- self.onUpgradeBegin = null
+	-- self.onUpgrading    = null
+	-- self.onUpgradeEnd   = null
+
 	self.upgrade_urls   = {}
 	self.update_list    = {}
+
+	self.download_size = 0
 end
 
 -- on upgrade begin delegate
@@ -33,6 +36,7 @@ end
 
 -- upgrade action
 function UpgradeService:upgrade()
+	self:init()
 	local request = network.createHTTPRequest(function(event) self:getRemotePlist(event) end, REMOTE_RES_PLIST, "GET")
 	request:start()
 end
@@ -85,10 +89,14 @@ function UpgradeService:resousePlistDiff()
 	-- print(self.upgrade_urls[1], self.upgrade_urls[2], self.upgrade_urls[3])
 
 	-- get update file list
+	self.download_size = 0
 	local remote_plist_data = {}
-	for f, m in string.gmatch(remote_plist_content, "\n([^@\n ]+) (%w+)") do
+	for f, m, s in string.gmatch(remote_plist_content, "\n([^@\n ]+) (%w+) (%d+)") do
 		remote_plist_data[f] = m
+		self.download_size = s + self.download_size
     end
+
+	print(self.download_size)
 
 	-- get local plist string
 	-- print("\n >> " .. REMOTE_SAV_PLIST, "\n >> " .. LOCAL_RES_PLIST)
@@ -121,22 +129,22 @@ end
 function UpgradeService:getUpgradeUrl(remote_plist)
 
 	-- 如果找不到 @upgrade_url
-	local _, _, upgrade_string = string.find(remote_plist, "@update_source([^\n]+)")
-	if (upgrade_string==nil) then
+	local _, _, update_source = string.find(remote_plist, "@update_source([^\n]+)")
+	if (update_source==nil) then
 		return nil
 	end
 
-    local upgrade_url = {}
+    local source_url = {}
 	local n = 1
-    for url in string.gmatch(upgrade_string, "(http://[^,]+)") do
-        upgrade_url[n] = trim(url)
+    for url in string.gmatch(update_source, "(http://[^,]+)") do
+        source_url[n] = trim(url)
 		n = n+1
     end
 
 	if (n==1) then
 		return nil
 	else
-		return upgrade_url
+		return source_url
 	end
 end
 

@@ -2,7 +2,5 @@
 @update_source http://cdn.shell.doopp.com/com.koramgame.ios.fysgtw/, http://cdn.shell.doopp.com/com.koramgame.android.fysgtw/
 @version 1.11
 
-a/b/WelcomeScene.lua ef48e4a003d0c94963653f6053948732 1149
-a/WelcomeScene.lua ef48e4a003d0c94963653f6053948732 1149
 WelcomeScene.lua ef48e4a003d0c94963653f6053948732 1149
 welcome_bg.jpg 2b04df3ecc1d94afddff082d139c6f15 780831
