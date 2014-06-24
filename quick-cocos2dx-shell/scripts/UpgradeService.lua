@@ -121,7 +121,7 @@ end
 function UpgradeService:getUpgradeUrl(remote_plist)
 
 	-- 如果找不到 @upgrade_url
-	local _, _, upgrade_string = string.find(remote_plist, "@upgrade_url([^\n]+)")
+	local _, _, upgrade_string = string.find(remote_plist, "@update_source([^\n]+)")
 	if (upgrade_string==nil) then
 		return nil
 	end
