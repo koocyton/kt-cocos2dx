@@ -33,7 +33,7 @@ end
 
 -- on upgrade end delegate
 function UpgradeService:upgradeEnd()
-	os.remove(LOCAL_TMP_PLIST)
+	os.remove(LOCAL_RES_PLIST)
 	os.rename(LOCAL_TMP_PLIST, LOCAL_RES_PLIST)
 	if type(self.onUpgradeEnd) == "function" then
 		self:onUpgradeEnd()
@@ -60,12 +60,12 @@ function UpgradeService:getRemotePlist(event)
 		return
     end
 
-	--local code = request:getResponseStatusCode()
-	--if code ~= 200 then
-	--   -- 请求结束，但没有返回 200 响应代码
-	--    print("request : return httpd code : " .. code)
-	--    return
-	---end
+	local code = request:getResponseStatusCode()
+	if code ~= 200 then
+	   -- 请求结束，但没有返回 200 响应代码
+	    print("request : return httpd code : " .. code)
+	    return
+	end
 
 	local response = request:getResponseString()
 	request:saveResponseData(LOCAL_TMP_PLIST);
@@ -80,6 +80,10 @@ function UpgradeService:resousePlistDiff()
 
 	-- get remote plist string
 	local remote_plist_content = CCFileUtils:sharedFileUtils():getFileData(LOCAL_TMP_PLIST)
+	if (remote_plist_content==nil) then
+		self:upgradeEnd()
+		return
+	end
 
 	-- check REMOTE_SAV_PLIST has this application's package name
 	if not self:remotePlistHasPackageName(remote_plist_content) then
@@ -108,6 +112,9 @@ function UpgradeService:resousePlistDiff()
 	-- get local plist string
 	-- print("\n >> " .. REMOTE_SAV_PLIST, "\n >> " .. LOCAL_RES_PLIST)
 	local local_plist_content = CCFileUtils:sharedFileUtils():getFileData(LOCAL_RES_PLIST)
+	if (local_plist_content==nil) then
+		local_plist_content = ""
+	end
 	local local_plist_data = {}
 	for f, m in string.gmatch(local_plist_content, "\n([^@\n ]+) (%w+)") do
 		if (remote_plist_data[f]==nil) then
