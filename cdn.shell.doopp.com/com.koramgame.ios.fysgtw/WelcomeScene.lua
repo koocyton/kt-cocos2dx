@@ -5,8 +5,8 @@ end)
 
 -- scene init
 function WelcomeScene:ctor()
-	-- welcome_bg.jpg Penguins.jpg
-	display.newSprite("image/Penguins.jpg"):pos(display.cx, display.cy):addTo(self)
+	-- welcome_bg.jpg image/Penguins.jpg
+	display.newSprite("welcome_bg.jpg"):pos(display.cx, display.cy):addTo(self)
 end
 
 function WelcomeScene:showTouch()

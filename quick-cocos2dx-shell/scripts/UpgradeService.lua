@@ -33,8 +33,8 @@ end
 
 -- on upgrade end delegate
 function UpgradeService:upgradeEnd()
-	-- os.rename(LOCAL_TMP_PLIST, LOCAL_RES_PLIST)
-	print( " >> end >> ")
+	os.remove(LOCAL_TMP_PLIST)
+	os.rename(LOCAL_TMP_PLIST, LOCAL_RES_PLIST)
 	if type(self.onUpgradeEnd) == "function" then
 		self:onUpgradeEnd()
 	end
