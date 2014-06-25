@@ -9,8 +9,7 @@ end)
 -- scene init
 function UpgradeScene:ctor()
     --CCFileUtils:sharedFileUtils():addSearchPath("scripts/")
-	display.newSprite("scripts/logo.jpg"):pos(display.cx, display.cy):addTo(self)
-	-- display.newSprite("update_bg.jpg"):pos(display.cx, display.cy):addTo(self)
+	display.newSprite("scripts/logo.png"):pos(display.cx, display.cy):addTo(self)
 end
 
 -- begin upgrade
@@ -20,6 +19,7 @@ end
 
 -- end upgrade
 function UpgradeScene:onUpgradeEnd()
+	self:onUpgrading(1)
 	--print(" <<<<<<<<<<< onUpgradeEnd")
     CCFileUtils:sharedFileUtils():addSearchPath("res/")
     -- begin goto welcome scene
