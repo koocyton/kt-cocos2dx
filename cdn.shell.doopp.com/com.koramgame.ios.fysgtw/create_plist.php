@@ -14,7 +14,7 @@ function getUpgradePlist($root_dir, $now_dir)
     $dir_handle = @opendir($now_dir);
     while (($file = readdir($dir_handle)) !== false)
     {
-        if($file=='.' || $file=='..' || $file=='create_plist.php' || $file=='last_version.plist') {
+        if($file{0}=='.' || $file=='create_plist.php' || $file=='last_version.plist') {
             continue;
         }
         $file = $now_dir . DIRECTORY_SEPARATOR . $file;

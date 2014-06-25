@@ -213,22 +213,52 @@ function UpgradeService:SaveUpgradeFile(event, file_path, key)
 	end
 
 	local local_file_path = LOCAL_RES_DIR .. file_path
-	-- print(file_path, #self.update_list, key, local_file_path)
-	self:createNotExistDir(local_file_path)
+	local _, _, local_file_dir = string.find(local_file_path, "(.+)" .. DS .. "[^" .. DS .. "]+")
+	-- print(local_file_dir, file_path, #self.update_list, key, local_file_path)
+	self:createDir(local_file_dir)
 	request:saveResponseData(local_file_path)
 
 	-- print(" >>>>>>>>>>>> ", request:getResponseDataLength(), self.download_size)
 	self:upgrading(request:getResponseDataLength() / self.download_size * 0.8)
-
 	self:updateLocalFile(key+1)
 end
 
 -- create a Not Exist Dir
-function UpgradeService:createNotExistDir(file_path)
-	local _,_,dir = string.find(file_path, "(.+)" .. DS .. "%w+")
-	lfs.mkdir(dir)
-	-- print( " >>> mkdir (199) " .. dir)
-	-- os.execute("md  " .. dir)
+function UpgradeService:createDir(create_dir)
+
+	-- is is dir, return
+	local dir_attr = lfs.attributes(create_dir)
+	if dir_attr ~= nil then
+		if dir_attr.mode == 'directory' then
+			return
+		end
+	end
+
+	--
+	local tmp_create_dir = create_dir
+	local will_create_dir = {create_dir}
+	local ii = 1
+	for d in string.gmatch(create_dir, "([^\\]+)" .. DS) do
+		local _, _, _tmp_create_dir = string.find(tmp_create_dir, "(.+)" .. DS .. "[^" .. DS .. "]+")
+		tmp_create_dir = _tmp_create_dir
+
+		-- is is dir, return
+		local tmp_dir_attr = lfs.attributes(tmp_create_dir)
+		if tmp_dir_attr ~= nil then
+			if tmp_dir_attr.mode == 'directory' then
+				break
+			end
+		end
+		
+		ii = ii + 1
+		will_create_dir[ii] = tmp_create_dir
+    end
+
+	-- create 
+	for nn=ii,1,-1 do
+		-- print(" >>>>>>>>>>", will_create_dir[nn])
+		lfs.mkdir(will_create_dir[nn])
+	end
 end
 
 --
