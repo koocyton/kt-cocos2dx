@@ -26,8 +26,8 @@ function UpgradeScene:onUpgradeEnd()
 	--print(" <<<<<<<<<<< onUpgradeEnd")
     CCFileUtils:sharedFileUtils():addSearchPath("res/")
     -- begin goto welcome scene
-    local scene = require("WelcomeScene").new()
-    display.replaceScene(scene)
+
+    display.replaceScene(require("WelcomeScene").new(), "fade", 0.6, display.COLOR_BLACK)
 end
 
 -- upgrading ...
