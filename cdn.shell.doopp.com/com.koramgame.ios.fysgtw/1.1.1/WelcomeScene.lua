@@ -5,7 +5,7 @@ end)
 
 -- scene init
 function WelcomeScene:ctor()
-	display.newSprite("welcome_bg.jpg"):pos(display.cx, display.cy):addTo(self)
+	display.newSprite("image/lighthouse.jpg"):pos(display.cx, display.cy):addTo(self)
 end
 
 function WelcomeScene:showTouch()
@@ -21,7 +21,7 @@ function WelcomeScene:showTouch()
 		return true
 	end)
 
-	ui.newTTFLabel({text="Touch me",size=30,align=ui.TEXT_ALIGN_CENTER}):pos(display.cx, display.cy / 3):addTo(self)
+	ui.newTTFLabel({text="1.1.1",size=30,align=ui.TEXT_ALIGN_CENTER}):pos(display.cx, display.cy / 3):addTo(self)
 end
 
 -- on enter this scene

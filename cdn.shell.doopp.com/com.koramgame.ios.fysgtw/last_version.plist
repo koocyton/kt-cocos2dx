@@ -2,8 +2,9 @@
 @update_source http://cdn.shell.doopp.com/com.koramgame.ios.fysgtw/, http://cdn.shell.doopp.com/com.koramgame.android.fysgtw/
 @version 1.11
 
-framework_precompiled.zip 35a6d9ec8a4d30092f95e04fb55af95b 101470
-image/Penguins.jpg 9d377b10ce778c4938b3c7e2c63a229a 777835
-scene/main.lua ef48e4a003d0c94963653f6053948732 1149
-WelcomeScene.lua 72819d08203ab853419d8b76425a71e9 1189
-welcome_bg.jpg 2b04df3ecc1d94afddff082d139c6f15 780831
+1.1.1/framework_precompiled.zip 35a6d9ec8a4d30092f95e04fb55af95b 101470
+1.1.1/image/lighthouse.jpg 8969288f4245120e7c3870287cce0ff3 561276
+1.1.1/WelcomeScene.lua 3ae07427d0dedb1eba7b4fd2867ffdc3 1152
+1.1.2/framework_precompiled.zip 35a6d9ec8a4d30092f95e04fb55af95b 101470
+1.1.2/image/penguins.jpg 9d377b10ce778c4938b3c7e2c63a229a 777835
+1.1.2/WelcomeScene.lua 2696f9b72807a6223ee4c9152dd7fbd6 1150
