@@ -47,5 +47,16 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.doopp.qc2dx</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>lytest</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>
