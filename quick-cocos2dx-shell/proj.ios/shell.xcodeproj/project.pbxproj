@@ -410,8 +410,8 @@
 				ARCHS = armv7;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -455,7 +455,7 @@
 					"\"$(QUICK_COCOS2DX_ROOT)/lib/third_party\"",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(QUICK_COCOS2DX_ROOT)/lib/cocos2d-x/cocos2dx/platform/third_party/ios/libraries\"",
 					"\"$(QUICK_COCOS2DX_ROOT)/lib/cocos2d-x/scripting/lua/luajit/ios\"",
@@ -481,8 +481,8 @@
 				ARCHS = armv7;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -524,7 +524,7 @@
 					"\"$(QUICK_COCOS2DX_ROOT)/lib/third_party\"",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(QUICK_COCOS2DX_ROOT)/lib/cocos2d-x/cocos2dx/platform/third_party/ios/libraries\"",
 					"\"$(QUICK_COCOS2DX_ROOT)/lib/cocos2d-x/scripting/lua/luajit/ios\"",
