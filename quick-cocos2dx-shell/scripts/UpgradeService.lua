@@ -43,7 +43,10 @@ end
 -- upgrade action
 function UpgradeService:upgrade()
 	self:init()
-	local request = network.createHTTPRequest(function(event) self:getRemotePlist(event) end, REMOTE_RES_PLIST, "GET")
+	--local plist_url = REMOTE_RES_PLIST .. "/last_version.plist"
+	local plist_url = REMOTE_RES_PLIST .. "/1.1.1.plist"
+	-- local plist_url = REMOTE_RES_PLIST .. "/1.1.2.plist"
+	local request = network.createHTTPRequest(function(event) self:getRemotePlist(event) end, plist_url, "GET")
 	request:start()
 end
 
@@ -182,7 +185,7 @@ function UpgradeService:updateLocalFile(key)
 		self:upgradeEnd()
 		return
 	end
-	local remote_file_url = self.upgrade_urls[1] .. self.update_list[key]
+	local remote_file_url = self.upgrade_urls[1] .. "/" .. self.update_list[key]
 	-- print(remote_file_url)
 	local request = network.createHTTPRequest(function(event) self:SaveUpgradeFile(event, self.update_list[key], key) end, remote_file_url, "GET")
 	request:start()
