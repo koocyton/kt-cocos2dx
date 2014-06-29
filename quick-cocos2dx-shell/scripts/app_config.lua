@@ -31,7 +31,7 @@ LOCAL_RES_PLIST = LOCAL_RES_DIR .. "local_version.flist"
 LOCAL_TMP_PLIST = LOCAL_RES_DIR .. "remote_version.flist"
 
 -- Remote Application Path
-REMOTE_RES_PLIST = "http://static1.kunlun.com/test-game1/com.koramgame.ios.fysgtw/"
+REMOTE_RES_PLIST = "http://static1.kunlun.com/test-game1/com.koramgame.ios.fysgtw"
 
 -- Remote Config URL
 REMOTE_CONFIG_URL = ""

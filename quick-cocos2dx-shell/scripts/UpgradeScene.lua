@@ -10,7 +10,7 @@ end)
 
 -- scene init
 function UpgradeScene:ctor()
-	process:pos(112, 72):addTo(self)
+	process:pos(200, 72):addTo(self)
     display.newSprite("res/logo.png"):pos(display.cx, display.cy):addTo(self)
 end
 
@@ -23,15 +23,15 @@ end
 function UpgradeScene:onUpgradeEnd()
 	self:onUpgrading(1)
 	-- print(" <<<<<<<<<<< onUpgradeEnd")
-    CCFileUtils:sharedFileUtils():addSearchPath(LOCAL_RES_DIR)
     -- begin goto welcome scene
+    CCFileUtils:sharedFileUtils():addSearchPath(LOCAL_RES_DIR)
     display.replaceScene(require("WelcomeScene").new(), "fade", 0.6, display.COLOR_BLACK)
 end
 
 -- upgrading ...
 function UpgradeScene:onUpgrading(number)
 	-- print("onUpgrading : " .. number)
-	processX = 112 + 730 * number
+	processX = 200 + 730 * number
 	process:setPosition(processX, 72)
 end
 

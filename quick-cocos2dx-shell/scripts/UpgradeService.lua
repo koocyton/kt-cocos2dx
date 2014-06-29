@@ -196,7 +196,8 @@ function UpgradeService:SaveUpgradeFile(event, file_path, key)
 	local request = event.request
 	--
 	if not (event.name == "completed") then
-		print("request error : UpgradeService.lua (140)", request:getErrorCode(), request:getErrorMessage())
+		print("request error : UpgradeService.lua (140)", request:getErrorCode(), request:getErrorMessage(), file_path)
+		self:updateLocalFile(key)
 		return
     end
 
