@@ -48,7 +48,6 @@ function UpgradeService:upgrade()
 	-- local plist_url = REMOTE_RES_PLIST .. "/1.1.2.flist"
 	local request = network.createHTTPRequest(function(event) self:getRemotePlist(event) end, plist_url, "GET")
 	request:start()
-	display.newSprite("scripts/logo.png"):pos(display.cx, display.cy):addTo(self)
 end
 
 -- download resource plist file and save plist in local

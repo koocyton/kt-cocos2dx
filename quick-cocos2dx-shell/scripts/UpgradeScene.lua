@@ -1,7 +1,7 @@
 -- set upgrade service
 local upgradeService = require("UpgradeService")
 
-local process = display.newSprite("scripts/process.jpg");
+local process = display.newSprite("res/process.jpg");
 
 -- scene class
 local UpgradeScene = class("UpgradeScene", function()
@@ -11,7 +11,7 @@ end)
 -- scene init
 function UpgradeScene:ctor()
 	process:pos(112, 72):addTo(self)
-    display.newSprite("scripts/logo.png"):pos(display.cx, display.cy):addTo(self)
+    display.newSprite("res/logo.png"):pos(display.cx, display.cy):addTo(self)
 end
 
 -- begin upgrade
@@ -22,7 +22,7 @@ end
 -- end upgrade
 function UpgradeScene:onUpgradeEnd()
 	self:onUpgrading(1)
-	--print(" <<<<<<<<<<< onUpgradeEnd")
+	-- print(" <<<<<<<<<<< onUpgradeEnd")
     CCFileUtils:sharedFileUtils():addSearchPath(LOCAL_RES_DIR)
     -- begin goto welcome scene
     display.replaceScene(require("WelcomeScene").new(), "fade", 0.6, display.COLOR_BLACK)
@@ -30,7 +30,7 @@ end
 
 -- upgrading ...
 function UpgradeScene:onUpgrading(number)
-	print("onUpgrading : " .. number)
+	-- print("onUpgrading : " .. number)
 	processX = 112 + 730 * number
 	process:setPosition(processX, 72)
 end

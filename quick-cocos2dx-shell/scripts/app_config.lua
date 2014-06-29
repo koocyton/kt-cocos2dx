@@ -1,3 +1,5 @@
+-- device udid
+DEVICE_UUID = device.getOpenUDID
 
 -- package name
 PACKAGE_NAME = "com.koramgame.ios.fysgtw"
@@ -17,8 +19,9 @@ DEVICE_POST_URL = ""
 DS = "/";
 
 -- Location Application Path
-LOCAL_RES_DIR = device.writablePath .. "res/"
+LOCAL_RES_DIR = device.writablePath
 if (device.platform=="windows") then
+	LOCAL_RES_DIR = device.writablePath .. "res/"
 	DS = "\\"
 	LOCAL_RES_DIR = string.gsub(LOCAL_RES_DIR, "/", "\\")
 end

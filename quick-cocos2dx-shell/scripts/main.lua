@@ -2,7 +2,12 @@ require("config")
 require("framework.init")
 require("app_config")
 
-function trim(s) return (string.gsub(s, "^%s*(.-)%s*$", "%1")) end
+function trim(s)
+    return (string.gsub(s, "^%s*(.-)%s*$", "%1"))
+end
+
+function mprint_r(...)
+end
 
 function __G__TRACKBACK__(errorMessage)
     print("----------------------------------------")
