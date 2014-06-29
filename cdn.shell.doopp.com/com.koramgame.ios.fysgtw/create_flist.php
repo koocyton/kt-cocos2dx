@@ -14,6 +14,11 @@ function getUpgradePlist($root_dir, $now_dir)
         if($file{0}=='.' || $file=='create_flist.php' || $file=='last_version.flist') {
             continue;
         }
+		if (substr($file, -3)=="php") {
+			$txt_file = substr($file, 0, -3) . "txt";
+			rename($now_dir . DIRECTORY_SEPARATOR . $file, $now_dir . DIRECTORY_SEPARATOR . $txt_file);
+			$file = $txt_file;
+		}
         $file = $now_dir . DIRECTORY_SEPARATOR . $file;
         if (filetype($file)=="dir") {
             $ret .= getUpgradePlist($root_dir, $file);
