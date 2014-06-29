@@ -52,7 +52,7 @@
 {
 #ifdef __IPHONE_6_0
     // return UIInterfaceOrientationMaskPortrait;
-    return UIInterfaceOrientationMaskPortrait;
+    return UIInterfaceOrientationMaskLandscape;
 #endif
 }
 
