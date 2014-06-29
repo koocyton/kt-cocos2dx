@@ -17,15 +17,15 @@ DEVICE_POST_URL = ""
 DS = "/";
 
 -- Location Application Path
-LOCAL_RES_DIR = device.writablePath
+LOCAL_RES_DIR = device.writablePath .. "res/"
 if (device.platform=="windows") then
 	DS = "\\"
 	LOCAL_RES_DIR = string.gsub(LOCAL_RES_DIR, "/", "\\")
 end
 
 -- device.writablePath .. device.directorySeparator
-LOCAL_RES_PLIST = LOCAL_RES_DIR .. "local_version.plist"
-LOCAL_TMP_PLIST = LOCAL_RES_DIR .. "remote_version.plist"
+LOCAL_RES_PLIST = LOCAL_RES_DIR .. "local_version.flist"
+LOCAL_TMP_PLIST = LOCAL_RES_DIR .. "remote_version.flist"
 
 -- Remote Application Path
 REMOTE_RES_PLIST = "http://static1.kunlun.com/test-game1/com.koramgame.ios.fysgtw/"

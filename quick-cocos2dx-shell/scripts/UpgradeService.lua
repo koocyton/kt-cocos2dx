@@ -43,18 +43,16 @@ end
 -- upgrade action
 function UpgradeService:upgrade()
 	self:init()
-    -- local plist_url = REMOTE_RES_PLIST .. "/last_version.plist"
-	local plist_url = REMOTE_RES_PLIST .. "/1.1.1.plist"
-	-- local plist_url = REMOTE_RES_PLIST .. "/1.1.2.plist"
-    CCLuaLog(" >>>> aaaaaa")
+    local plist_url = REMOTE_RES_PLIST .. "/last_version.flist"
+	-- local plist_url = REMOTE_RES_PLIST .. "/1.1.1.flist"
+	-- local plist_url = REMOTE_RES_PLIST .. "/1.1.2.flist"
 	local request = network.createHTTPRequest(function(event) self:getRemotePlist(event) end, plist_url, "GET")
 	request:start()
-display.newSprite("scripts/logo.png"):pos(display.cx, display.cy):addTo(self)
+	display.newSprite("scripts/logo.png"):pos(display.cx, display.cy):addTo(self)
 end
 
 -- download resource plist file and save plist in local
 function UpgradeService:getRemotePlist(event)
-	print( " <<<<<<<<<<<<< ")
 	self:upgradeBegin()
 	local request = event.request
 
