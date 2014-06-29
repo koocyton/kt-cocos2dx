@@ -11,7 +11,7 @@ function getUpgradePlist($root_dir, $now_dir)
     $dir_handle = @opendir($now_dir);
     while (($file = readdir($dir_handle)) !== false)
     {
-        if($file{0}=='.' || $file=='create_plist.php' || $file=='last_version.plist' || $file=='rsync_cdn.bat') {
+        if($file{0}=='.' || $file=='create_flist.php' || $file=='last_version.flist') {
             continue;
         }
         $file = $now_dir . DIRECTORY_SEPARATOR . $file;
@@ -57,11 +57,11 @@ while (($version = readdir($root_dir_handle)) !== false)
 	$upgrade_plist .= "\n@version " . $version . "\n";
 	$version_dir = $root_dir . DIRECTORY_SEPARATOR . $version;
 	$upgrade_plist .= getUpgradePlist($version_dir, $version_dir);
-	file_put_contents($root_dir . DIRECTORY_SEPARATOR . $version . ".plist", $upgrade_plist);
+	file_put_contents($root_dir . DIRECTORY_SEPARATOR . $version . ".flist", $upgrade_plist);
 
 	$launch_web_version .= '<a class="btn" href="lytest://com.doopp.qc2dx/?v='.$version.'">'.$version.'</a>';
 }
-copy($root_dir.DIRECTORY_SEPARATOR.$compare_version.".plist", $root_dir.DIRECTORY_SEPARATOR."last_version.plist");
+copy($root_dir.DIRECTORY_SEPARATOR.$compare_version.".flist", $root_dir.DIRECTORY_SEPARATOR."last_version.flist");
 
 closedir($root_dir_handle);
 
