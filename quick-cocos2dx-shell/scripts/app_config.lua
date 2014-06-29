@@ -1,3 +1,5 @@
+-- device udid
+DEVICE_UUID = device.getOpenUDID
 
 -- package name
 PACKAGE_NAME = "com.koramgame.ios.fysgtw"
