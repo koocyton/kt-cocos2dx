@@ -3,8 +3,7 @@
 $package_name = array(	"com.koramgame.ios.fysgtw",
 						"com.koramgame.android.fysgtw" );
 
-$update_source = array(	"http://static1.kunlun.com/test-game1/com.koramgame.ios.fysgtw/",
-						"http://static1.kunlun.com/test-game1/com.koramgame.android.fysgtw/" );
+$update_source = array(	"http://static1.kunlun.com/test-game1/com.koramgame.ios.fysgtw/" );
 
 function getUpgradePlist($root_dir, $now_dir)
 {
@@ -39,6 +38,7 @@ foreach($package_name as $name) {
     $first_loop = false;
 }
 
+$launch_web_version = "";
 $compare_version = "";
 $root_dir_handle = @opendir($root_dir);
 while (($version = readdir($root_dir_handle)) !== false)
@@ -58,7 +58,43 @@ while (($version = readdir($root_dir_handle)) !== false)
 	$version_dir = $root_dir . DIRECTORY_SEPARATOR . $version;
 	$upgrade_plist .= getUpgradePlist($version_dir, $version_dir);
 	file_put_contents($root_dir . DIRECTORY_SEPARATOR . $version . ".plist", $upgrade_plist);
+
+	$launch_web_version .= '<a class="btn" href="lytest://com.doopp.qc2dx/?v='.$version.'">'.$version.'</a>';
 }
 copy($root_dir.DIRECTORY_SEPARATOR.$compare_version.".plist", $root_dir.DIRECTORY_SEPARATOR."last_version.plist");
 
 closedir($root_dir_handle);
+
+
+$launch_web = $root_dir . DIRECTORY_SEPARATOR . "launch.html";
+
+$launch_web_html = <<<EOF
+<!DOCTYPE html>
+<html lang="zh-cn" >
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="format-detection" content="telephone=no"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="white" />
+<title> Kunlun.com </title>
+<style>
+* { margin: 0; padding: 0; }
+html, body { height: 100%; }
+body, label, input, textarea, select, button {font-family: "Helvetica Neue",Arial,sans-serif;}
+body {overflow-y: scroll;background-color: #ffffff;font-size: 14px; margin: 0;padding: 0;}
+label, input, textarea, select {font-size: 13px;line-height: 20px;margin: 0;}
+.nav {width: 100%;height: 40px;background-color: #252525;text-align:center;color:#fff;line-height:40px;}
+.btn {height: 30px; line-height: 30px; width: 100%;background-color: #ffffff;border-bottom: 1px solid #252525;color: #222222;display: inline-block;}
+</style>
+</head>
+<body>
+<div>
+<div class="nav">com.koramgame.ios.fysgtw</div>
+{$launch_web_version}
+</div>
+</body>
+</html>
+EOF;
+
+file_put_contents($launch_web, $launch_web_html );
