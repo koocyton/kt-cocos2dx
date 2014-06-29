@@ -17,7 +17,7 @@ DEVICE_POST_URL = ""
 DS = "/";
 
 -- Location Application Path
-LOCAL_RES_DIR = device.writablePath .. "res/"
+LOCAL_RES_DIR = device.writablePath
 if (device.platform=="windows") then
 	DS = "\\"
 	LOCAL_RES_DIR = string.gsub(LOCAL_RES_DIR, "/", "\\")
