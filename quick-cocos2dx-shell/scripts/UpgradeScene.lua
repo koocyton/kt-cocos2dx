@@ -1,3 +1,6 @@
+-- process sprite
+local processSprite = display.newSprite("res/process.jpg")
+
 -- scene class
 local UpgradeScene = class("UpgradeScene", function()
 	return display.newScene("UpgradeScene")
@@ -5,7 +8,7 @@ end)
 
 -- scene init
 function UpgradeScene:ctor()
-	self.processSprite = display.newSprite("res/process.jpg"):pos(200, 72):addTo(self);
+	processSprite:pos(200, 72):addTo(self);
     display.newSprite("res/logo.png"):pos(display.cx, display.cy):addTo(self)
 end
 
@@ -24,7 +27,7 @@ end
 -- upgrading ...
 function UpgradeScene:onUpgrading(number)
 	processX = 200 + 730 * number
-	self.processSprite:setPosition(processX, 72)
+	processSprite:setPosition(processX, 72)
 end
 
 -- on enter this scene
