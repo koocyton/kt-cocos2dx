@@ -1,37 +1,40 @@
--- device udid
+-- Remote Config URL ( test )
+REMOTE_CONFIG_URL = ""
+
+-- Device ID ( test )
 DEVICE_UUID = device.getOpenUDID
 
--- package name
-PACKAGE_NAME = "com.koramgame.ios.fysgtw"
-
--- union ID
-PRODUCT_UNION_ID = "1023"
-
--- union SID
-PRODUCT_UNION_SID = "1023"
-
--- product ID
-PRODUCT_ID = "1023"
-
--- Device ID Post URL
+-- Device ID Post URL ( test )
 DEVICE_POST_URL = ""
 
+-- package name ( test )
+PACKAGE_NAME = "com.koramgame.ios.fysgtw"
+
+-- union ID ( test )
+PRODUCT_UNION_ID = ""
+
+-- union Son ID ( test )
+PRODUCT_UNION_SID = ""
+
+-- product ID ( test )
+PRODUCT_ID = ""
+
+-- Directory separator
 DS = "/";
 
--- Location Application Path
-LOCAL_RES_DIR = device.writablePath
+-- Update Path is a writable path
+UPDATE_DIR = device.writablePath .. "update/"
 if (device.platform=="windows") then
-	LOCAL_RES_DIR = device.writablePath .. "res/"
 	DS = "\\"
-	LOCAL_RES_DIR = string.gsub(LOCAL_RES_DIR, "/", "\\")
+	UPDATE_DIR = string.gsub(UPDATE_DIR, "/", "\\")
 end
 
 -- device.writablePath .. device.directorySeparator
-LOCAL_RES_PLIST = LOCAL_RES_DIR .. "local_version.flist"
-LOCAL_TMP_PLIST = LOCAL_RES_DIR .. "remote_version.flist"
+LOCAL_FLIST = UPDATE_DIR .. "local_version.flist"
+DOWN_FLIST  = UPDATE_DIR .. "remote_version.flist"
+
+-- for url scheme , upgrade version is last version
+UPGRADE_VERSION = "last_version"
 
 -- Remote Application Path
-REMOTE_RES_PLIST = "http://static1.kunlun.com/test-game1/com.koramgame.ios.fysgtw"
-
--- Remote Config URL
-REMOTE_CONFIG_URL = ""
+UPDATE_FLIST_URL = "http://static1.kunlun.com/test-game1/com.koramgame.ios.fysgtw/" .. UPGRADE_VERSION .. ".flist"
