@@ -90,7 +90,7 @@ body, label, input, textarea, select, button {font-family: "Helvetica Neue",Aria
 body {overflow-y: scroll;background-color: #ffffff;font-size: 14px; margin: 0;padding: 0;}
 label, input, textarea, select {font-size: 13px;line-height: 20px;margin: 0;}
 .nav {width: 100%;height: 40px;background-color: #252525;text-align:center;color:#fff;line-height:40px;}
-.btn {height: 30px; line-height: 30px; width: 100%;background-color: #ffffff;border-bottom: 1px solid #252525;color: #222222;display: inline-block;}
+.btn {height: 50px; line-height: 50px; width: 100%;background-color: #ffffff;border-bottom: 1px solid #252525;color: #222222;display: inline-block;}
 </style>
 </head>
 <body>

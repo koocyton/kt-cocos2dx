@@ -12,6 +12,8 @@ function UpgradeService:ctor()
 
 	self.update_source  = {}
 	self.update_size    = 0
+	self.download_size  = 0
+
 	self.update_files   = {}
 	self.update_rate    = 0
 end
@@ -43,6 +45,7 @@ end
 
 -- upgrade action
 function UpgradeService:upgrade()
+
 	self.saveHttpResponse(UPDATE_FLIST_URL, DOWN_FLIST, function(response, file_path)
 
 		-- 如果找不到 package_name
@@ -50,7 +53,6 @@ function UpgradeService:upgrade()
 		if (package_name==nil) then
 			self:upgradeEnd()
 		end
-
 
 		-- 如果找不到 update_source
 		local _, _, update_source = string.find(response, "@update_source([^\n]+)")
@@ -69,13 +71,12 @@ function UpgradeService:upgrade()
 		self.update_source = source_url
 
 		-- get update file list
-		local down_flist_data = {}
-		self.update_size = 0
-		for f, m, s in string.gmatch(response, "\n([^@\n ]+) (%w+) (%d+)") do
-			down_flist_data[f] = m
-			self.update_size = s + self.update_size
+		local down_flist_md5  = {}
+		local down_flist_size = {}
+		for file_path, file_md5, file_size in string.gmatch(response, "\n([^@\n ]+) (%w+) (%d+)") do
+			down_flist_md5[file_path]  = file_md5
+			down_flist_size[file_path] = file_size
 		end
-
 
 		local local_flist_content = CCFileUtils:sharedFileUtils():getFileData(LOCAL_FLIST)
 		if (local_flist_content==nil) then
@@ -83,21 +84,23 @@ function UpgradeService:upgrade()
 		end
 		local local_flist_data = {}
 		for file_path, file_md5 in string.gmatch(local_flist_content, "\n([^@\n ]+) (%w+)") do
-			if (down_flist_data[file_path]==nil) then
+			if (down_flist_md5[file_path]==nil) then
 				-- delete
 				if (device.platform=="windows") then
 					file_path = string.gsub(UPDATE_DIR .. file_path, "/", "\\")
 				end
 				os.remove(file_path)
-			elseif (down_flist_data[file_path]==file_md5) then
-				down_flist_data[file_path] = nil
+			elseif (down_flist_md5[file_path]==file_md5) then
+				down_flist_size[file_path] = nil
 			end
 		end
 
 		self.update_files = {}
+		self.update_size = 0
 		local n = 1
-		for f,m in pairs(down_flist_data) do
-			self.update_files[n] = f
+		for file_path, file_size in pairs(down_flist_size) do
+			self.update_size = file_size + self.update_size
+			self.update_files[n] = file_path
 			n = n + 1
 		end
 		self.update_rate = 0
@@ -121,8 +124,8 @@ function UpgradeService:updateLocalFile(key)
 		if (file_path==nil) then
 			self:updateLocalFile(key)
 		else
-			local rate = string.len(response) + self.update_rate / self.update_size * 100
-			self:upgrading(rate)
+			self.update_rate = self.update_rate + string.len(response) / self.update_size
+			self:upgrading(self.update_rate)
 			self:updateLocalFile(1 + key)
 		end
 	end)
@@ -136,7 +139,7 @@ function UpgradeService.saveHttpResponse(request_url, file_path, call_function)
 		local request = event.request
 
 		if event.name ~= "completed" then
-			CCLuaLog("Request Error [:56] - " .. request_url, request:getErrorCode(), request:getErrorMessage())
+			CCLuaLog("Request Error [:56] - " .. request_url .. " " .. request:getErrorCode() .. " " .. request:getErrorMessage())
 			if type(call_function) == "function" then
 				call_function(nil, nil)
 			end
