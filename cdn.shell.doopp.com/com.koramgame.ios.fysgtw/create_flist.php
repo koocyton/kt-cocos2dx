@@ -64,7 +64,7 @@ while (($version = readdir($root_dir_handle)) !== false)
 	$upgrade_plist .= getUpgradePlist($version_dir, $version_dir);
 	file_put_contents($root_dir . DIRECTORY_SEPARATOR . $version . ".flist", $upgrade_plist);
 
-	$launch_web_version .= '<a class="btn" href="lytest://com.doopp.qc2dx/?v='.$version.'">'.$version.'</a>';
+	$launch_web_version .= '<a class="btn" href="lytest://com.doopp.qc2dx/?v='.$version.'"><span class="btn-left"> &nbsp; '.$version.'</span><span class="btn-right">&gt; &nbsp; </span></a>';
 }
 copy($root_dir.DIRECTORY_SEPARATOR.$compare_version.".flist", $root_dir.DIRECTORY_SEPARATOR."last_version.flist");
 
@@ -89,8 +89,10 @@ html, body { height: 100%; }
 body, label, input, textarea, select, button {font-family: "Helvetica Neue",Arial,sans-serif;}
 body {overflow-y: scroll;background-color: #ffffff;font-size: 14px; margin: 0;padding: 0;}
 label, input, textarea, select {font-size: 13px;line-height: 20px;margin: 0;}
-.nav {width: 100%;height: 40px;background-color: #252525;text-align:center;color:#fff;line-height:40px;}
-.btn {height: 50px; line-height: 50px; width: 100%;background-color: #ffffff;border-bottom: 1px solid #252525;color: #222222;display: inline-block;}
+.nav {width: 100%;height: 50px;background-color: #252525;text-align:center;color:#fff;line-height:50px;}
+.btn {width: 100%; border-bottom: 1px solid #252525;color: #222222;display: inline-block;}
+.btn-left{float:left;display:inline-block;height: 50px; line-height: 50px;}
+.btn-right{float:right;display:inline-block;height: 50px; line-height: 50px;}
 </style>
 </head>
 <body>
