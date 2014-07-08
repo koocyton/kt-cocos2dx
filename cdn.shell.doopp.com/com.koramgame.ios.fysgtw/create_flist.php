@@ -107,3 +107,13 @@ body{font-size:14px;margin:0;padding:0;background-color:#ffffff;}
 EOF;
 
 file_put_contents($launch_web, $launch_web_html );
+
+
+/******************** rsync to you cdn ***********************\
+
+@echo off
+set RSYNC_PASSWORD=........
+rsync -avF --delete-after --exclude="file1" --exclude="file2" . "rsync://rsync_account@0.0.0.0/modname/"
+pause
+
+\*************************************************************/
