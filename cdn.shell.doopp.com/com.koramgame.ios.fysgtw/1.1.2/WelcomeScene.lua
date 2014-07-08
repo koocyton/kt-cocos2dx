@@ -21,7 +21,7 @@ function WelcomeScene:showTouch()
 		return true
 	end)
 
-	ui.newTTFLabel({text="1.1.2",size=30,align=ui.TEXT_ALIGN_CENTER}):pos(display.cx, display.cy / 3):addTo(self)
+	ui.newTTFLabel({text="1.1.2 ( 美女 )",size=30,align=ui.TEXT_ALIGN_CENTER}):pos(display.cx, display.cy / 3):addTo(self)
 end
 
 -- on enter this scene
