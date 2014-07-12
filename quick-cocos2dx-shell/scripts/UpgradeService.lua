@@ -78,7 +78,10 @@ function UpgradeService:upgrade()
 			down_flist_size[file_path] = file_size
 		end
 
-		local local_flist_content = CCFileUtils:sharedFileUtils():getFileData(LOCAL_FLIST)
+		-- two choice
+		local local_flist_content = UpgradeService.getLocalFlistContent(UPDATE_DIR)
+		-- local local_flist_content = CCFileUtils:sharedFileUtils():getFileData(LOCAL_FLIST)
+		-- CCLuaLog("\n >>  local_flist_content  >> \n" .. local_flist_content .. "\n")
 		if (local_flist_content==nil) then
 			local_flist_content = ""
 		end
@@ -107,6 +110,24 @@ function UpgradeService:upgrade()
 		self:updateLocalFile(1)
 
 	end)
+end
+
+-- get local files path and file`s md5
+function UpgradeService.getLocalFlistContent(dir_path, root_length)
+	root_length = root_length or string.len(dir_path)+1
+    local flist_content = ""
+    for file_path in lfs.dir(dir_path) do
+        if file_path ~= '.' and file_path ~= '..'  and file_path ~= 'remote_version.flist'  and file_path ~= 'local_version.flist' then
+			full_path = dir_path .. file_path
+            local file_attr = lfs.attributes(full_path)
+            if file_attr.mode == 'directory' then
+                flist_content = flist_content .. UpgradeService.getLocalFlistContent(full_path .. DS, root_length)
+            else
+                flist_content = flist_content .. "\n" .. string.sub(full_path, root_length) .. " " .. crypto.md5file(full_path)
+            end
+        end
+    end
+    return string.gsub(flist_content, "\\", "/")
 end
 
 -- update the file
