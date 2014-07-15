@@ -1,3 +1,6 @@
+-- 是否是开发模式
+DEVELOPER_MODE = true
+
 -- Remote Config URL ( test )
 REMOTE_CONFIG_URL = ""
 

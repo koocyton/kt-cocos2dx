@@ -14,12 +14,12 @@ LOAD_DEPRECATED_API = false
 -- load shortcodes API
 LOAD_SHORTCODES_API = true
 
--- screen orientation
-CONFIG_SCREEN_ORIENTATION = "landscape"
+-- screen orientation portrait / landscape
+CONFIG_SCREEN_ORIENTATION = "portrait"
 
 -- design resolution
-CONFIG_SCREEN_WIDTH  = 960
-CONFIG_SCREEN_HEIGHT = 640
+CONFIG_SCREEN_WIDTH  = 640
+CONFIG_SCREEN_HEIGHT = 1136
 
 -- auto scale mode
-CONFIG_SCREEN_AUTOSCALE = "FIXED_HEIGHT"
+CONFIG_SCREEN_AUTOSCALE = "FIXED_WIDTH"

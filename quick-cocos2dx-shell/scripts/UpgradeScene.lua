@@ -32,6 +32,10 @@ end
 
 -- on enter this scene
 function UpgradeScene:onEnter()
+	if (DEVELOPER_MODE==true) then
+		self:onUpgradeEnd()
+		return
+	end
 	-- set delegate
 	local upgradeService = require("UpgradeService")
 	upgradeService.onUpgradeBegin = self.onUpgradeBegin
